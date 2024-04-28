@@ -1,0 +1,21 @@
+{
+  "files.associations": {
+    "array": "c",
+    "string": "c",
+    "string_view": "c",
+    "span": "c",
+    "allocator.h": "c",
+    "gles2.h": "c",
+    "gl_window.h": "c",
+    "application.h": "c",
+    "application_layer.h": "c",
+    "main_menu_layer.h": "c",
+    "stddef.h": "c",
+    "gl_common.h": "c",
+    "gl_shader.h": "c",
+    "gl_buffer.h": "c",
+    "gl_texture.h": "c",
+    "gl_framebuffer.h": "c",
+    "stdint.h": "c"
+  }
+}

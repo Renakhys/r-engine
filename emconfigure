@@ -1,0 +1,5 @@
+source "/home/renakhys/progetti/emsdk/emsdk_env.sh"
+emcmake cmake -S . -B build_ems
+cd build_ems
+make
+cd ..
