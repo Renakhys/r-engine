@@ -16,6 +16,8 @@
     "gl_buffer.h": "c",
     "gl_texture.h": "c",
     "gl_framebuffer.h": "c",
-    "stdint.h": "c"
+    "stdint.h": "c",
+    "file_utils.h": "c",
+    "lua.h": "c"
   }
 }

@@ -9,6 +9,8 @@
 #include <gl/gl_texture.h>
 #include <gl/gl_framebuffer.h>
 
+#include <font/font.h>
+
 #if EMSCRIPTEN
 #include <emscripten.h>
 #endif
@@ -22,6 +24,12 @@ void application_main_loop()
 
 int main()
 {
+  if (!font_library_init())
+  {
+    log_error("unable to start font engine");
+    return -1;
+  }
+
   app = application_create();
 
   create_main_menu_layer(app, "layer 1");
@@ -38,6 +46,7 @@ int main()
 #endif
 
   application_free(app);
+  font_library_deinit();
 
   size_t leaked_memory = get_allocated_memory();
   assert(leaked_memory == 0);
@@ -59,5 +68,6 @@ int main()
 
   size_t leaked_framebuffers = gl_get_active_framebuffers();
   assert(leaked_framebuffers == 0);
+
   return 0;
 }

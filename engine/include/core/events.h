@@ -12,6 +12,7 @@ typedef enum
   EV_MOUSE_SCROLL,
 
   EV_KEY_PRESS,
+  EV_TEXT_INPUT,
 
   EV_END
 } event_type;
@@ -61,6 +62,11 @@ typedef struct
 typedef struct 
 {
 } event_window_close;
+
+typedef struct 
+{
+  u32 codepoint;
+} event_window_text_input;
 
 bool event_raise(event_handler handler, void* source, event_type type, void* event_data);
 

@@ -6,6 +6,8 @@ add_library(engine ${ENGINE_SRC})
 
 target_include_directories(engine PUBLIC "include")
 target_link_libraries(engine PUBLIC cglm)
+target_link_libraries(engine PUBLIC freetype)
+target_link_libraries(engine PUBLIC lua_static)
 
 if (NOT EMSCRIPTEN)
   target_link_libraries(engine PUBLIC glfw)

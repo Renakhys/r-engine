@@ -4,3 +4,9 @@
 [submodule "modules/cglm"]
 	path = modules/cglm
 	url = https://github.com/recp/cglm.git
+[submodule "modules/freetype"]
+	path = modules/freetype
+	url = https://github.com/freetype/freetype.git
+[submodule "modules/lua"]
+	path = modules/lua
+	url = https://github.com/walterschell/Lua.git

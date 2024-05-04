@@ -38,7 +38,7 @@ static bool gl_framebuffer_attachment_add(gl_framebuffer *fb, u32 internal_forma
 
 bool gl_framebuffer_texture_attachment_add(gl_framebuffer *fb, u32 color_slot)
 {
-  return gl_framebuffer_attachment_add(fb, GL_RGBA8, GL_RGBA, GL_FLOAT, GL_COLOR_ATTACHMENT0 + color_slot);
+  return gl_framebuffer_attachment_add(fb, GL_RGBA8, GL_RGBA, GL_UNSIGNED_BYTE, GL_COLOR_ATTACHMENT0 + color_slot);
 }
 
 bool gl_framebuffer_depth_attachment_add(gl_framebuffer *fb)

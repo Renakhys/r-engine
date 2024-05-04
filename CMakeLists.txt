@@ -10,8 +10,8 @@ set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -DDEBUG")
 
 # engine library
 add_subdirectory(engine)
-# game 
-add_subdirectory(game)
+# sandbox 
+add_subdirectory(sandbox)
 
 # dependencies
 set(CGLM_SHARED ON "Shared build")
@@ -20,6 +20,8 @@ set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 
 add_subdirectory(modules/cglm)
+add_subdirectory(modules/freetype)
+add_subdirectory(modules/lua)
 
 if(NOT EMSCRIPTEN)
   add_subdirectory(modules/glad)
@@ -27,21 +29,21 @@ if(NOT EMSCRIPTEN)
 endif()
 
 if (EMSCRIPTEN)
-    #set_target_properties(game PROPERTIES CMAKE_C_FLAGS  "${CMAKE_C_FLAGS} --bind --memory-init-file 0 -s TOTAL_MEMORY=64MB")
+    #set_target_properties(sandbox PROPERTIES CMAKE_C_FLAGS  "${CMAKE_C_FLAGS} --bind --memory-init-file 0 -s TOTAL_MEMORY=64MB")
     ## Embed files at build-dir/data
-    #set_target_properties(game PROPERTIES CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --embed-file \"${CMAKE_SOURCE_DIR}/bin-run\"") #@data
+    #set_target_properties(sandbox PROPERTIES CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --embed-file \"${CMAKE_SOURCE_DIR}/bin-run\"") #@data
     #
     ## Use webgl2 and glfw3
-    #set_target_properties(game PROPERTIES CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -s USE_WEBGL2=1 -s USE_GLFW=3")
+    #set_target_properties(sandbox PROPERTIES CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -s USE_WEBGL2=1 -s USE_GLFW=3")
     #
-    #set_target_properties(game PROPERTIES CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -s BINARYEN_ASYNC_COMPILATION=1 -s WASM=1 -s BINARYEN=1 -s \"BINARYEN_METHOD='native-wasm'\" -s DISABLE_DEPRECATED_FIND_EVENT_TARGET_BEHAVIOR=1 -o app_wasm2.html")
+    #set_target_properties(sandbox PROPERTIES CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -s BINARYEN_ASYNC_COMPILATION=1 -s WASM=1 -s BINARYEN=1 -s \"BINARYEN_METHOD='native-wasm'\" -s DISABLE_DEPRECATED_FIND_EVENT_TARGET_BEHAVIOR=1 -o app_wasm2.html")
     ## Enable js output (no html).
-    ##set_target_properties(game PROPERTIES CMAKE_EXECUTABLE_SUFFIX "_wasm.js")
-    #set_target_properties(game PROPERTIES CMAKE_EXECUTABLE_SUFFIX "_emsdk.html")
+    ##set_target_properties(sandbox PROPERTIES CMAKE_EXECUTABLE_SUFFIX "_wasm.js")
+    #set_target_properties(sandbox PROPERTIES CMAKE_EXECUTABLE_SUFFIX "_emsdk.html")
 
-  set_target_properties(game PROPERTIES CMAKE_EXECUTABLE_SUFFIX ".html")
-  set_target_properties(game PROPERTIES SUFFIX ".html")
-	set_target_properties(game PROPERTIES COMPILE_FLAGS "-Os -s SIDE_MODULE=1 ")
-	set_target_properties(game PROPERTIES LINK_FLAGS    "-Os -s WASM=0 -s SIDE_MODULE=1 -s STANDALONE_WASM --no-entry")  
-  set_target_properties(game PROPERTIES LINK_FLAGS " --bind -s MIN_WEBGL_VERSION=2 -s -g2 -s USE_GLFW=3 --preload-file \"${CMAKE_SOURCE_DIR}/bin-run/assets@assets\"")
+  set_target_properties(sandbox PROPERTIES CMAKE_EXECUTABLE_SUFFIX ".html")
+  set_target_properties(sandbox PROPERTIES SUFFIX ".html")
+	set_target_properties(sandbox PROPERTIES COMPILE_FLAGS "-Os -s SIDE_MODULE=1 ")
+	set_target_properties(sandbox PROPERTIES LINK_FLAGS    "-Os -s WASM=0 -s SIDE_MODULE=1 -s STANDALONE_WASM --no-entry")  
+  set_target_properties(sandbox PROPERTIES LINK_FLAGS " --bind -s MIN_WEBGL_VERSION=2 -s -g2 -s USE_GLFW=3 --preload-file \"${CMAKE_SOURCE_DIR}/bin-run/assets@assets\"")
 endif()

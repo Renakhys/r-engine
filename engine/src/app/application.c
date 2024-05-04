@@ -40,6 +40,8 @@ static bool application_on_event(event_type type, void *source, void *event, voi
 
   // call event on all layers
   llist_iterate_backward(&app->layers, application_layer_on_event_iterator, &data);
+
+  return true;
 }
 
 static void application_layer_destructor(void *data)
@@ -54,7 +56,7 @@ application *application_create()
 
   app->window = gl_window_create("application", 800, 600);
   app->window->user_data = app;
-  app->window->clearcolor = v4(0.3, 0.2, 0.1, 1.0);
+  app->window->clearcolor = v4(1.f, 0.4f, 0.7f, 1.0f);
 
   // window event handler
   event_handler_register(&app->window->window_event_handler, app, application_on_event);

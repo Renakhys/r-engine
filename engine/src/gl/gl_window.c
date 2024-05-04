@@ -197,11 +197,11 @@ static bool init_GLAD()
     glDebugMessageCallback(gl_debug_output, NULL);
     glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, NULL, GL_TRUE);
   }
+#endif
 
   glEnable(GL_CULL_FACE);
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-#endif
   return true;
 }
 
@@ -310,7 +310,7 @@ bool gl_window_is_key_pressed(gl_window *window, i32 key)
 static void glfw_window_mouse_button_callback(GLFWwindow *glfw_window, i32 button, i32 action, i32 mods)
 {
   gl_window *window = (gl_window *)glfwGetWindowUserPointer(glfw_window);
-  
+
   event_mouse_button event = {
       .button = button,
       .action = action,
@@ -376,8 +376,10 @@ static void glfw_window_char_callback(GLFWwindow *glfw_window, u32 codepoint)
 {
   gl_window *window = (gl_window *)glfwGetWindowUserPointer(glfw_window);
 
-  // if (window->char_callback)
-  //   window->char_callback(window, codepoint);
+  event_window_text_input event = {
+      .codepoint = codepoint};
+
+  event_raise(window->window_event_handler, window, EV_TEXT_INPUT, &event);
 }
 
 static void glfw_window_framebuffer_resize_callback(GLFWwindow *glfw_window, i32 width, i32 height)

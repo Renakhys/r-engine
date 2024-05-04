@@ -12,10 +12,10 @@ quad_renderer quad_renderer_create()
   quad_renderer r = {};
 
   vertex vertices[] = {
-      {{-0.9f, 0.9f, 0.0f}, {0.f, 1.f}}, // top left
-      {{0.9f, 0.9f, 0.0f}, {1.f, 1.f}},  // top right
-      {{0.9f, -0.9f, 0.0f}, {1.f, 0.f}}, // bottom right
-      {{-0.9f, -0.9f, 0.0f}, {0.f, 0.f}} // bottom left
+      {{-1.0f, 1.0f, 0.0f}, {0.f, 1.f}}, // top left
+      {{1.0f, 1.0f, 0.0f}, {1.f, 1.f}},  // top right
+      {{1.0f, -1.0f, 0.0f}, {1.f, 0.f}}, // bottom right
+      {{-1.0f, -1.0f, 0.0f}, {0.f, 0.f}} // bottom left
   };
 
   u32 indices[] = {
@@ -28,12 +28,10 @@ quad_renderer quad_renderer_create()
   gl_vao_bind(r.vao);
 
   r.vbo = gl_vbo_create_data(vertices, sizeof(vertices));
+  r.ibo = gl_ibo_create_indices(indices, 6);
+
   gl_vbo_set_attribute(&r.vbo, 3, GL_FLOAT, false, sizeof(vertex), (void *)offsetof(vertex, position));
   gl_vbo_set_attribute(&r.vbo, 2, GL_FLOAT, false, sizeof(vertex), (void *)offsetof(vertex, uv));
-
-  r.ibo = gl_ibo_create_indices(indices, 6);
-  gl_ibo_bind(r.ibo);
-
   return r;
 }
 
