@@ -26,6 +26,8 @@ static void cli_layer_destructor(void *layer_data)
 
 static bool test_layer_render(application_layer *layer, float dt)
 {
+  UNUSED(dt);
+
   cli_layer_data *data = (cli_layer_data *)layer->layer_data;
 
   float scale = 1.f;
@@ -68,7 +70,7 @@ static bool test_layer_render(application_layer *layer, float dt)
   /*
     prompt content
   */
-  text_renderer_draw(r, data->font, &x, &y, (i8*)cli->prompt_buffer.buffer.data, text_color);
+  text_renderer_draw(r, data->font, &x, &y, (i8 *)cli->prompt_buffer.buffer.data, text_color);
   text_renderer_new_line(r, data->font, base_x, &x, &y);
 
   /*
@@ -83,10 +85,14 @@ static bool test_layer_render(application_layer *layer, float dt)
   }
 
   text_renderer_end(r);
+
+  return true;
 }
 
 static bool on_layer_event(event_type type, void *source, void *event, void *context)
 {
+  UNUSED(source);
+
   application_layer *layer = (application_layer *)context;
   cli_layer_data *data = (cli_layer_data *)layer->layer_data;
 

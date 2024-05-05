@@ -11,7 +11,7 @@ typedef struct
   gl_shader text_shader;
 } text_renderer;
 
-text_renderer text_renderer_create();
+text_renderer text_renderer_create(void);
 
 void text_renderer_free(text_renderer *r);
 

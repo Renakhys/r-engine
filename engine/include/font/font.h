@@ -23,10 +23,19 @@ typedef struct
   f32 line_height;
 } fl_font;
 
-bool font_library_init();
+/// @brief initialize freetype
+/// @return 
+bool font_library_init(void);
 
-void font_library_deinit();
+/// @brief deinitialize freetype
+void font_library_deinit(void);
 
+/// @brief load font from disk and create font atlas
+/// @param font_path path
+/// @param font_size_px char height in px
+/// @return font pointer
 fl_font *font_create(const char *font_path, f32 font_size_px);
 
+/// @brief free loaded font
+/// @param f 
 void font_free(fl_font *f);

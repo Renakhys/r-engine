@@ -55,8 +55,11 @@ void print_list(llist *list, const char *label)
   printf("%s end\n\n", label);
 }
 
-i32 main()
+i32 main(i32 argc, i8 *argv[])
 {
+  UNUSED(argc);
+  UNUSED(argv);
+
   llist list = llist_create(sizeof(int), node_destructor, &base_allocator);
 
   insert_value_at(&list, 0, -1);

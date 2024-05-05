@@ -11,6 +11,9 @@ static void error_callback(i32 error, const char *description)
 static u32 last_error_code = 0;
 static void gl_debug_output(GLenum source, GLenum type, u32 id, GLenum severity, GLsizei length, const char *message, const void *userParam)
 {
+  UNUSED(length);
+  UNUSED(userParam);
+
   // ignore non-significant error/warning codes
   if (id == 131169 || id == 131185 || id == 131218 || id == 131204)
     return;
@@ -103,7 +106,7 @@ static void glfw_window_framebuffer_resize_callback(GLFWwindow *glfw_window, i32
 static void glfw_window_resize_callback(GLFWwindow *glfw_window, i32 width, i32 height);
 static void glfw_window_close_callback(GLFWwindow *glfw_window);
 
-static bool init_glContext()
+static bool init_glContext(void)
 {
   // context is already been created, no need to create a new one
   if (g_context_cnt > 0)
@@ -114,24 +117,21 @@ static bool init_glContext()
 
   if (!glfwInit())
   {
-    log_critical("ERROR: unable to initialize GLFW\n");
+    log_critical("ERROR: %s", " unable to initialize GLFW");
     return false;
   }
   g_context_cnt++;
-  log_trace("gl context created");
 
   glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
   glfwSetErrorCallback(error_callback);
 
 #ifdef __EMSCRIPTEN__
-  log_trace("init glfw emscripten");
   glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
   glfwWindowHint(GLFW_CONTEXT_CREATION_API, GLFW_EGL_CONTEXT_API);
   glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 #else
-  log_trace("init glfw desktop");
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -139,18 +139,17 @@ static bool init_glContext()
   return true;
 }
 
-static void deinit_glContext()
+static void deinit_glContext(void)
 {
   g_context_cnt--;
 
   if (g_context_cnt == 0)
   {
     glfwTerminate();
-    log_trace("gl context destroyed");
   }
 }
 
-static bool init_GLAD()
+static bool init_GLAD(void)
 {
 #ifndef __EMSCRIPTEN__
   // if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -226,7 +225,7 @@ gl_window *gl_window_create(const char *title, i32 width, i32 height)
 
   if (!glfw_window)
   {
-    log_error("ERROR: unable to create window\n");
+    log_error("ERROR: %s", "unable to create window\n");
     return NULL;
   }
 

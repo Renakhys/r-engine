@@ -24,4 +24,4 @@ bool gl_shader_set_uniform_float3(gl_shader shader, const char *uniform, vec3s v
 
 bool gl_shader_set_uniform_float4(gl_shader shader, const char *uniform, vec4s value);
 
-u32 gl_get_active_shaders();
+u32 gl_get_active_shaders(void);

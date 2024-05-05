@@ -107,7 +107,7 @@ void gl_texture_free(gl_texture *texture)
 void gl_texture_set_data(gl_texture texture, u32 x0, u32 y0, u32 w, u32 h, u32 data_format, u32 data_type, const void *data)
 {
   if (!(texture.internal_format & data_format))
-    log_error("texture format not supported!");
+    log_error("%s", "texture format not supported!");
 
   // upload data to texture
   glBindTexture(GL_TEXTURE_2D, texture.id);
@@ -120,7 +120,7 @@ void gl_texture_bind(gl_texture texture, u32 slot)
   glBindTexture(GL_TEXTURE_2D, texture.id);
 }
 
-u32 gl_get_active_textures()
+u32 gl_get_active_textures(void)
 {
   return created_textures - deleted_textures;
 }

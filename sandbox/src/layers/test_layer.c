@@ -44,6 +44,8 @@ application_layer *create_test_layer(application *app)
 
 static bool test_layer_render(application_layer *layer, float dt)
 {
+UNUSED(dt);
+
   test_layer_data *data = (test_layer_data *)layer->layer_data;
   gl_shader_bind(data->shader);
   gl_texture_bind(data->texture, 0);

@@ -12,17 +12,17 @@ static u32 created_ibo = 0;
 static u32 deleted_ibo = 0;
 static u32 bound_ibo = 0;
 
-u32 gl_get_active_vao()
+u32 gl_get_active_vao(void)
 {
   return created_vao - deleted_vao;
 }
 
-u32 gl_get_active_vbo()
+u32 gl_get_active_vbo(void)
 {
   return created_vbo - deleted_vbo;
 }
 
-u32 gl_get_active_ibo()
+u32 gl_get_active_ibo(void)
 {
   return created_ibo - deleted_ibo;
 }
@@ -31,7 +31,7 @@ u32 gl_get_active_ibo()
   VAO
 */
 
-gl_vao gl_vao_create()
+gl_vao gl_vao_create(void)
 {
   gl_vao vao = {0};
   glGenVertexArrays(1, &vao.id);

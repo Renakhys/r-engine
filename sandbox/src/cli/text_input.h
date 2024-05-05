@@ -9,7 +9,7 @@ typedef struct
   event_handler ev_handler;
 } text_input;
 
-text_input text_input_create();
+text_input text_input_create(void);
 
 void text_input_free(text_input* t);
 

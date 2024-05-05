@@ -46,6 +46,8 @@ void llist_iterate_backward(llist *list, LLIST_NODE_ITERATOR_FN iterator, void *
 
 void llist_iterate_forward_from(llist *list, llist_node *node, LLIST_NODE_ITERATOR_FN iterator, void *user_data)
 {
+  UNUSED(list);
+
   while (node)
   {
     bool cont = iterator(node, user_data);
@@ -59,6 +61,8 @@ void llist_iterate_forward_from(llist *list, llist_node *node, LLIST_NODE_ITERAT
 
 void llist_iterate_backward_from(llist *list, llist_node *node, LLIST_NODE_ITERATOR_FN iterator, void *user_data)
 {
+  UNUSED(list);
+
   while (node)
   {
     bool cont = iterator(node, user_data);

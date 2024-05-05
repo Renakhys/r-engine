@@ -17,7 +17,7 @@ struct application
 
 /// @brief create a new application, with a window
 /// @return pointer to application
-application *application_create();
+application *application_create(void);
 
 /// @brief release resources used by application, including all layers
 /// @param app pointer to application

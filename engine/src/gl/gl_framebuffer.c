@@ -24,7 +24,7 @@ static bool gl_framebuffer_attachment_add(gl_framebuffer *fb, u32 internal_forma
 {
   if (fb->attachment_count + 1 > GL_FRAMEBUFFER_MAX_ATTACHMENTS)
   {
-    log_error("max number of attachments on framebuffer");
+    log_error("%s", "max number of attachments on framebuffer");
     return false;
   }
   u32 a = fb->attachment_count++;
@@ -111,7 +111,7 @@ void gl_framebuffer_bind(gl_framebuffer *fb)
   bound_fb = fb->id;
 }
 
-void gl_framebuffer_unbind()
+void gl_framebuffer_unbind(void)
 {
   if (0 == bound_fb)
     return;
@@ -134,7 +134,7 @@ void gl_framebuffer_free(gl_framebuffer *fb)
   deleted_framebuffers++;
 }
 
-u32 gl_get_active_framebuffers()
+u32 gl_get_active_framebuffers(void)
 {
   return created_framebuffers - deleted_framebuffers;
 }

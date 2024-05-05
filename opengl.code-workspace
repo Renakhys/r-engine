@@ -41,7 +41,14 @@
 			"cli.h": "c",
 			"common.h": "c",
 			"vector": "c",
-			"darray.h": "c"
+			"darray.h": "c",
+			"system_error": "c",
+			"bitset": "c",
+			"compare": "c",
+			"format": "c",
+			"fstream": "c",
+			"sstream": "c",
+			"*.inc": "c"
 		}
 	}
 }

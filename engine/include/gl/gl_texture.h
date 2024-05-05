@@ -19,4 +19,4 @@ void gl_texture_set_data(gl_texture texture, u32 x0, u32 y0, u32 w, u32 h, u32 d
 
 void gl_texture_bind(gl_texture texture, u32 slot);
 
-u32 gl_get_active_textures();
+u32 gl_get_active_textures(void);

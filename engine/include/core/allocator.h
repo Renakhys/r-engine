@@ -12,4 +12,4 @@ typedef struct
 
 extern allocator base_allocator;
 
-size_t get_allocated_memory();
+size_t get_allocated_memory(void);

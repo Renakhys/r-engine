@@ -142,7 +142,7 @@ void gl_shader_bind(gl_shader shader)
   glUseProgram(shader.program);
 }
 
-u32 gl_get_active_shaders()
+u32 gl_get_active_shaders(void)
 {
   return created_shaders - deleted_shaders;
 }

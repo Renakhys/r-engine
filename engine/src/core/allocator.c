@@ -75,7 +75,7 @@ allocator base_allocator = {
     .alloc = base_allocator_allocate,
     .free = base_allocator_free};
 
-size_t get_allocated_memory()
+size_t get_allocated_memory(void)
 {
   return allocated_memory - deallocated_memory;
 }

@@ -20,7 +20,7 @@ static const char *fl_get_error_message(FT_Error err)
   return "(Unknown error)";
 }
 
-bool font_library_init()
+bool font_library_init(void)
 {
   FT_Error error = FT_Init_FreeType(&library);
   if (error)
@@ -32,7 +32,7 @@ bool font_library_init()
   return true;
 }
 
-void font_library_deinit()
+void font_library_deinit(void)
 {
   FT_Done_FreeType(library);
 }

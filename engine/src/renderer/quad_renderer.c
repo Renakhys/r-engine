@@ -7,7 +7,7 @@ typedef struct
   vec2s uv;
 } vertex;
 
-quad_renderer quad_renderer_create()
+quad_renderer quad_renderer_create(void)
 {
   quad_renderer r = {0};
 

@@ -7,7 +7,7 @@ typedef struct
   u32 id;
 } gl_vao;
 
-gl_vao gl_vao_create();
+gl_vao gl_vao_create(void);
 
 void gl_vao_free(gl_vao *vao);
 
@@ -46,8 +46,8 @@ void gl_ibo_bind(gl_ibo ibo);
 
 void gl_ibo_load_indices(gl_ibo ibo, size_t offset, const u32 *indices, size_t count);
 
-u32 gl_get_active_vao();
+u32 gl_get_active_vao(void);
 
-u32 gl_get_active_vbo();
+u32 gl_get_active_vbo(void);
 
-u32 gl_get_active_ibo();
+u32 gl_get_active_ibo(void);

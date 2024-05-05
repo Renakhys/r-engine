@@ -29,10 +29,10 @@
     printf(color severity ": " message ANSI_COLOR_RESET "\n" __VA_OPT__(, ) __VA_ARGS__); \
   } while (0)
 
-#define log_critical(message, ...) log_message_internal(ANSI_COLOR_MAGENTA, "CRITICAL", message, __VA_ARGS__)
-#define log_error(message, ...) log_message_internal(ANSI_COLOR_RED, "ERROR", message, __VA_ARGS__)
-#define log_warn(message, ...) log_message_internal(ANSI_COLOR_YELLOW, "WARNING", message, __VA_ARGS__)
-#define log_info(message, ...) log_message_internal(ANSI_COLOR_GREEN, "INFO", message, __VA_ARGS__)
-#define log_debug(message, ...) log_message_internal(ANSI_COLOR_CYAN, "DEBUG", message, __VA_ARGS__)
-#define log_trace(message, ...) log_message_internal(ANSI_COLOR_RESET, "TRACE", message, __VA_ARGS__)
+#define log_critical(message, ...) log_message_internal(ANSI_COLOR_MAGENTA, "CRITICAL", message __VA_OPT__(, ) __VA_ARGS__)
+#define log_error(message, ...) log_message_internal(ANSI_COLOR_RED, "ERROR", message __VA_OPT__(, ) __VA_ARGS__)
+#define log_warn(message, ...) log_message_internal(ANSI_COLOR_YELLOW, "WARNING", message __VA_OPT__(, ) __VA_ARGS__)
+#define log_info(message, ...) log_message_internal(ANSI_COLOR_GREEN, "INFO", message __VA_OPT__(, ) __VA_ARGS__)
+#define log_debug(message, ...) log_message_internal(ANSI_COLOR_CYAN, "DEBUG", message __VA_OPT__(, ) __VA_ARGS__)
+#define log_trace(message, ...) log_message_internal(ANSI_COLOR_RESET, "TRACE", message __VA_OPT__(, ) __VA_ARGS__)
 

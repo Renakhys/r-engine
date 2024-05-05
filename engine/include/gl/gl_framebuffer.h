@@ -38,8 +38,8 @@ void gl_framebuffer_clear(gl_framebuffer *fb);
 
 void gl_framebuffer_bind(gl_framebuffer *fb);
 
-void gl_framebuffer_unbind();
+void gl_framebuffer_unbind(void);
 
 void gl_framebuffer_free(gl_framebuffer *fb);
 
-u32 gl_get_active_framebuffers();
+u32 gl_get_active_framebuffers(void);

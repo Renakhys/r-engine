@@ -12,7 +12,7 @@ typedef struct
   float texture;
 } text_renderer_vertex;
 
-text_renderer text_renderer_create()
+text_renderer text_renderer_create(void)
 {
   text_renderer r = {0};
 
@@ -56,6 +56,9 @@ void text_renderer_end(text_renderer *r)
 
 void text_renderer_append(text_renderer *r, fl_font *font, const char *format, ...)
 {
+  UNUSED(r);
+  UNUSED(font);
+  UNUSED(format);
   // va_list args;
   // va_start(args, format);
   // // available space in renderer buffer
@@ -69,6 +72,8 @@ void text_renderer_append(text_renderer *r, fl_font *font, const char *format, .
 
 void text_renderer_new_line(text_renderer *r, fl_font *font, f32 base_x, f32 *x, f32 *y)
 {
+  UNUSED(r);
+  
   *x = base_x;
   *y -= font->line_height;
 }

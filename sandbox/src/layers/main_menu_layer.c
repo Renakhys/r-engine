@@ -9,11 +9,17 @@ static void main_menu_layer_destructor(void *layer_data)
 
 static bool main_menu_layer_render(application_layer *layer, float dt)
 {
+  UNUSED(layer);
+  UNUSED(dt);
+
   return true;
 }
 
 static bool main_menu_on_mouse_button(application_layer *layer, event_mouse_button *event)
 {
+  UNUSED(layer);
+  UNUSED(event);
+
   main_menu_layer_data *data = (main_menu_layer_data *)layer->layer_data;
   printf("mouse event %s\n", data->name);
   return false;
@@ -21,13 +27,17 @@ static bool main_menu_on_mouse_button(application_layer *layer, event_mouse_butt
 
 static bool main_menu_on_char(application_layer *layer, event_window_text_input *event)
 {
-  const char* key_name = glfwGetKeyName(0,event->codepoint);
+  UNUSED(layer);
+
+  const char *key_name = glfwGetKeyName(0, event->codepoint);
   printf("char event %c %s\n", (unsigned char)event->codepoint, key_name);
   return true;
 }
 
 static bool on_main_menu_layer_event(event_type type, void *source, void *event, void *context)
 {
+  UNUSED(source);
+
   application_layer *layer = (application_layer *)context;
   switch (type)
   {

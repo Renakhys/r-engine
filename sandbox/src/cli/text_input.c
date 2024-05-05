@@ -87,6 +87,8 @@ static bool text_input_on_text_input(text_input *t, event_window_text_input *eve
 
 static bool on_layer_event(event_type type, void *source, void *event, void *context)
 {
+  UNUSED(source);
+
   text_input *t = (text_input *)context;
   switch (type)
   {
@@ -99,7 +101,7 @@ static bool on_layer_event(event_type type, void *source, void *event, void *con
   }
 }
 
-text_input text_input_create()
+text_input text_input_create(void)
 {
   text_input t = {0};
 

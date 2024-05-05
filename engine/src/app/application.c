@@ -50,7 +50,7 @@ static void application_layer_destructor(void *data)
   layer_free(l);
 }
 
-application *application_create()
+application *application_create(void)
 {
   application *app = base_allocator.alloc(sizeof(application));
 

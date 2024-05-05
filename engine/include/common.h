@@ -39,6 +39,8 @@ typedef double f64;
 #define v4_2(v4) ((vec2s){v4.x, v4.y})
 #define v3_2(v3) ((vec2s){v3.x, v3.y})
 
+#define UNUSED(x) (void)(x)
+
 static vec4s hex_to_rgba(int hex)
 {
   vec4s color;

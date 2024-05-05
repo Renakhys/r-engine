@@ -11,9 +11,8 @@ typedef struct
   gl_ibo ibo;
 } quad_renderer;
 
-quad_renderer quad_renderer_create();
+quad_renderer quad_renderer_create(void);
 
 void quad_renderer_free(quad_renderer *r);
 
 void quad_renderer_draw(quad_renderer r);
- 

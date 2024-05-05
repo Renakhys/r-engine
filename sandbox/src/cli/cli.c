@@ -33,6 +33,8 @@ static bool cli_on_key_press(cli_state *c, event_key_press *event)
 
 static bool on_layer_event(event_type type, void *source, void *event, void *context)
 {
+  UNUSED(source);
+
   cli_state *c = (cli_state *)context;
 
   bool handled = event_raise(c->prompt_buffer.ev_handler, c, &c->prompt_buffer, type, event);
@@ -71,4 +73,6 @@ void cli_free(cli_state *c)
 
 void cli_console_append(cli_state *c, const i8 *fmt, ...)
 {
+  UNUSED(c);
+  UNUSED(fmt);
 }

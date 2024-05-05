@@ -18,16 +18,19 @@
 
 application *app = NULL;
 
-void application_main_loop()
+void application_main_loop(void)
 {
   application_update(app, 0.f);
 }
 
-int main()
+i32 main(i32 argc, i8 *argv[])
 {
+  UNUSED(argc);
+  UNUSED(argv);
+
   if (!font_library_init())
   {
-    log_error("unable to start font engine");
+    log_error("ERROR: %s", "unable to start font engine");
     return -1;
   }
 
