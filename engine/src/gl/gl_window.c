@@ -5,10 +5,10 @@ static i32 g_context_cnt = 0;
 
 static void error_callback(i32 error, const char *description)
 {
-  fprintf(stderr, "GLFW error: %s\n", description);
+  fprintf(stderr, "GLFW error: %d %s\n", error, description);
 }
 
-static i32 last_error_code = 0;
+static u32 last_error_code = 0;
 static void gl_debug_output(GLenum source, GLenum type, u32 id, GLenum severity, GLsizei length, const char *message, const void *userParam)
 {
   // ignore non-significant error/warning codes
@@ -316,7 +316,7 @@ static void glfw_window_mouse_button_callback(GLFWwindow *glfw_window, i32 butto
       .action = action,
       .mods = mods};
 
-  event_raise(window->window_event_handler, window, EV_MOUSE_BUTTON, &event);
+  event_raise(window->window_event_handler, window, NULL, EV_MOUSE_BUTTON, &event);
 }
 
 static void glfw_window_mouse_scroll_callback(GLFWwindow *glfw_window, double offset_x, double offset_y)
@@ -327,7 +327,7 @@ static void glfw_window_mouse_scroll_callback(GLFWwindow *glfw_window, double of
       .offset_x = offset_x,
       .offset_y = offset_y};
 
-  event_raise(window->window_event_handler, window, EV_MOUSE_SCROLL, &event);
+  event_raise(window->window_event_handler, window, NULL, EV_MOUSE_SCROLL, &event);
 }
 
 static void glfw_window_mouse_position_callback(GLFWwindow *glfw_window, double pos_x, double pos_y)
@@ -340,7 +340,7 @@ static void glfw_window_mouse_position_callback(GLFWwindow *glfw_window, double 
       .pos_x = pos_x,
       .pos_y = pos_y};
 
-  event_raise(window->window_event_handler, window, EV_MOUSE_MOVE, &event);
+  event_raise(window->window_event_handler, window, NULL, EV_MOUSE_MOVE, &event);
 }
 
 static void glfw_window_key_callback(GLFWwindow *glfw_window, i32 key, i32 scancode, i32 action, i32 mods)
@@ -369,7 +369,7 @@ static void glfw_window_key_callback(GLFWwindow *glfw_window, i32 key, i32 scanc
       .action = action,
       .mods = mods};
 
-  event_raise(window->window_event_handler, window, EV_KEY_PRESS, &event);
+  event_raise(window->window_event_handler, window, NULL, EV_KEY_PRESS, &event);
 }
 
 static void glfw_window_char_callback(GLFWwindow *glfw_window, u32 codepoint)
@@ -379,7 +379,7 @@ static void glfw_window_char_callback(GLFWwindow *glfw_window, u32 codepoint)
   event_window_text_input event = {
       .codepoint = codepoint};
 
-  event_raise(window->window_event_handler, window, EV_TEXT_INPUT, &event);
+  event_raise(window->window_event_handler, window, NULL, EV_TEXT_INPUT, &event);
 }
 
 static void glfw_window_framebuffer_resize_callback(GLFWwindow *glfw_window, i32 width, i32 height)
@@ -393,7 +393,7 @@ static void glfw_window_framebuffer_resize_callback(GLFWwindow *glfw_window, i32
       .width = width,
       .height = height};
 
-  event_raise(window->window_event_handler, window, EV_WINDOW_RESIZE, &event);
+  event_raise(window->window_event_handler, window, NULL, EV_WINDOW_RESIZE, &event);
 }
 
 static void glfw_window_resize_callback(GLFWwindow *glfw_window, i32 width, i32 height)
@@ -407,16 +407,16 @@ static void glfw_window_resize_callback(GLFWwindow *glfw_window, i32 width, i32 
       .width = width,
       .height = height};
 
-  event_raise(window->window_event_handler, window, EV_WINDOW_RESIZE, &event);
+  event_raise(window->window_event_handler, window, NULL, EV_WINDOW_RESIZE, &event);
 }
 
 static void glfw_window_close_callback(GLFWwindow *glfw_window)
 {
   gl_window *window = (gl_window *)glfwGetWindowUserPointer(glfw_window);
 
-  event_window_close event = {};
+  event_window_close event;
 
-  event_raise(window->window_event_handler, window, EV_WINDOW_CLOSE, &event);
+  event_raise(window->window_event_handler, window, NULL, EV_WINDOW_CLOSE, &event);
 }
 
 #pragma endregion

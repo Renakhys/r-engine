@@ -20,10 +20,10 @@ typedef enum
 /// @brief event callback function, return true if event has been handled
 typedef bool (*EVENT_CALLBACK)(event_type type, void *source, void *event, void *context);
 
-typedef struct 
+typedef struct
 {
-  void* context;
   EVENT_CALLBACK callback;
+  void *context;
 } event_handler;
 
 typedef struct
@@ -53,21 +53,24 @@ typedef struct
   i32 mods;
 } event_key_press;
 
-typedef struct 
+typedef struct
 {
   i32 width;
   i32 height;
 } event_window_resize;
 
-typedef struct 
+typedef struct
 {
+  char unused;
 } event_window_close;
 
-typedef struct 
+typedef struct
 {
   u32 codepoint;
 } event_window_text_input;
 
-bool event_raise(event_handler handler, void* source, event_type type, void* event_data);
+bool event_raise(event_handler handler, void *source, void *target, event_type type, void *event_data);
 
-void event_handler_register(event_handler* handler, void* context, EVENT_CALLBACK callback);
+void event_handler_register(event_handler *handler, EVENT_CALLBACK callback);
+
+void event_handler_register_with_context(event_handler *handler, void *context, EVENT_CALLBACK callback);

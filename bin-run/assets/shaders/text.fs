@@ -7,7 +7,6 @@ uniform sampler2D u_textures[32];
 
 in vec2 uv;
 in vec4 foreground;
-in vec4 background;
 flat in float tex;
 
 out vec4 out_color;
@@ -82,15 +81,14 @@ vec4 sample_texture(float idx, vec2 uv) {
 }
 
 void main() {
-    vec4 tex_color = sample_texture(tex, uv);
 
     // sdf
-    //float d = tex_color.r;
-    //float aaf = fwidth(d);
-    //float alpha = smoothstep(0.5f - aaf, 0.5f + aaf, d);
+    // vec4 tex_color = sample_texture(tex, uv);
+    // float d = tex_color.r;
+    // float aaf = fwidth(d);
+    // float alpha = smoothstep(0.5f - aaf, 0.5f + aaf, d);
 
-    float alpha = tex_color.r;
-    vec4 color = (foreground * alpha); // + background * (1.f - alpha);
+    float alpha = sample_texture(tex, uv).r;
 
-    out_color = vec4(color.rgb, alpha);
+    out_color = vec4(foreground.rgb, alpha);
 }

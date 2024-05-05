@@ -9,7 +9,7 @@ typedef struct
 
 quad_renderer quad_renderer_create()
 {
-  quad_renderer r = {};
+  quad_renderer r = {0};
 
   vertex vertices[] = {
       {{-1.0f, 1.0f, 0.0f}, {0.f, 1.f}}, // top left

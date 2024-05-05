@@ -20,7 +20,7 @@ static bool on_main_menu_layer_event(event_type type, void *source, void *event,
     break;
   }
 
-  return event_raise(layer->layer_event_handler, layer, type, event);
+  return event_raise(layer->layer_event_handler, source, layer, type, event);
 }
 
 application_layer *layer_create(application *app, void *layer_data, LAYER_DATA_DESTRUCTOR_FN destructor, LAYER_RENDER_EVENT render_fn)
@@ -32,9 +32,8 @@ application_layer *layer_create(application *app, void *layer_data, LAYER_DATA_D
   l->destructor_fn = destructor;
   l->render_fn = render_fn;
 
-  event_handler_register(&l->application_event_handler, l, on_main_menu_layer_event);
+  event_handler_register(&l->application_event_handler, on_main_menu_layer_event);
   l->layer_event_handler.callback = NULL;
-  l->layer_event_handler.context = NULL;
 
   l->render_target = gl_framebuffer_create(app->window->w, app->window->h);
   gl_framebuffer_texture_attachment_add(&l->render_target, 0);

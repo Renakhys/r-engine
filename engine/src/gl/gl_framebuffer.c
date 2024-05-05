@@ -56,13 +56,13 @@ bool gl_framebuffer_invalidate(gl_framebuffer *fb)
   gl_framebuffer_bind(fb);
 
   // free all textures
-  for (i32 i = 0; i < fb->attachment_count; i++)
+  for (u32 i = 0; i < fb->attachment_count; i++)
   {
     gl_texture_free(&fb->attachments[i].texture);
   }
 
   // regenerate all textures
-  for (i32 i = 0; i < fb->attachment_count; i++)
+  for (u32 i = 0; i < fb->attachment_count; i++)
   {
     fb->attachments[i].texture = gl_texture_create_fb(fb->width, fb->height, fb->attachments[i].internal_format, fb->attachments[i].data_format, fb->attachments[i].type);
     glFramebufferTexture2D(GL_FRAMEBUFFER, fb->attachments[i].attachment, GL_TEXTURE_2D, fb->attachments[i].texture.id, 0);
@@ -122,7 +122,7 @@ void gl_framebuffer_unbind()
 void gl_framebuffer_free(gl_framebuffer *fb)
 {
   // free all textures
-  for (i32  i = 0; i < fb->attachment_count; i++)
+  for (u32  i = 0; i < fb->attachment_count; i++)
   {
     gl_texture_free(&fb->attachments[i].texture);
   }

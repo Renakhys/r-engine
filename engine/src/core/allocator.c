@@ -43,7 +43,7 @@ static void *base_allocator_allocate(size_t size)
     tail->magic_number = BASE_ALLOCATOR_GUARD_MAGIC_NUMBER;
 
     // return allocated memory after header
-    return data + sizeof(allocation_info_header);
+    return (u8*)data + sizeof(allocation_info_header);
   }
 #endif
 

@@ -15,7 +15,9 @@ text_renderer text_renderer_create();
 
 void text_renderer_free(text_renderer *r);
 
-void text_renderer_draw(text_renderer *r, fl_font *font, i32 *x, i32 *y, const char *text, vec4s fg, vec4s bg);
+void text_renderer_draw(text_renderer *r, fl_font *font, f32 *x, f32 *y, const char *text, vec4s fg);
+
+void text_renderer_new_line(text_renderer *r, fl_font *font, f32 base_x, f32 *x, f32 *y);
 
 void text_renderer_begin(text_renderer *r, u32 w, u32 h);
 

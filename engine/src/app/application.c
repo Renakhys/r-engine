@@ -15,7 +15,7 @@ static bool application_layer_on_event_iterator(llist_node *node, void *user_dat
   application_layer *layer = (application_layer *)llist_node_get_data(node);
   application_event_data *data = (application_event_data *)user_data;
 
-  bool handled = event_raise(layer->application_event_handler, data->source, data->type, data->event);
+  bool handled = event_raise(layer->application_event_handler, data->source, layer, data->type, data->event);
 
   if (handled)
     return false; // stop iterating
@@ -56,10 +56,10 @@ application *application_create()
 
   app->window = gl_window_create("application", 800, 600);
   app->window->user_data = app;
-  app->window->clearcolor = v4(1.f, 0.4f, 0.7f, 1.0f);
+  app->window->clearcolor = hex_to_rgba(0x181818ff);
 
   // window event handler
-  event_handler_register(&app->window->window_event_handler, app, application_on_event);
+  event_handler_register_with_context(&app->window->window_event_handler, app, application_on_event);
 
   app->shader = gl_shader_create("./assets/shaders/quad.vs", "./assets/shaders/quad.fs");
   app->renderer = quad_renderer_create();

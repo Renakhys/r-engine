@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.5)
 FILE(GLOB_RECURSE ENGINE_SRC src/ *.c)
 
 add_library(engine ${ENGINE_SRC})
+target_compile_options(engine PRIVATE -Wextra -Wpedantic -Werror)
 
 target_include_directories(engine PUBLIC "include")
 target_link_libraries(engine PUBLIC cglm)

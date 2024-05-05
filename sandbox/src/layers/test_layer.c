@@ -87,15 +87,15 @@ static bool test_layer_render(application_layer *layer, float dt)
   batch_renderer_end(r);
 
   float scale = 1;
-  i32 x = 0;
-  i32 y = layer->app->window->h / scale;
+  f32 x = 0;
+  f32 y = layer->app->window->h / scale;
   text_renderer_begin(&data->textr, layer->app->window->w / scale, layer->app->window->h / scale);
-  text_renderer_draw(&data->textr, data->font, &x, &y, "test string 1\n", v4(1, 0, 0, 1), v4(0, 0, 0, 0));
-  text_renderer_draw(&data->textr, data->font, &x, &y, "test string 2\n", v4(0, 1, 0, 1), v4(0, 0, 0, 0));
-  text_renderer_draw(&data->textr, data->font, &x, &y, "test string 3\n", v4(0, 0, 1, 1), v4(0, 0, 0, 0));
-  text_renderer_draw(&data->textr, data->font, &x, &y, "test string 4\n", v4(1, 1, 0, 1), v4(0, 0, 0, 0));
-  text_renderer_draw(&data->textr, data->font, &x, &y, "test string 5\n", v4(0, 1, 1, 1), v4(0, 0, 0, 0));
-  text_renderer_draw(&data->textr, data->font, &x, &y, "test string 6\n", v4(1, 0, 1, 1), v4(0, 0, 0, 0));
+  text_renderer_draw(&data->textr, data->font, &x, &y, "test string 1\n", v4(1, 0, 0, 1));
+  text_renderer_draw(&data->textr, data->font, &x, &y, "test string 2\n", v4(0, 1, 0, 1));
+  text_renderer_draw(&data->textr, data->font, &x, &y, "test string 3\n", v4(0, 0, 1, 1));
+  text_renderer_draw(&data->textr, data->font, &x, &y, "test string 4\n", v4(1, 1, 0, 1));
+  text_renderer_draw(&data->textr, data->font, &x, &y, "test string 5\n", v4(0, 1, 1, 1));
+  text_renderer_draw(&data->textr, data->font, &x, &y, "test string 6\n", v4(1, 0, 1, 1));
   text_renderer_end(&data->textr);
 
   return true;

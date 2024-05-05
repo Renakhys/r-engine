@@ -37,15 +37,15 @@ void font_library_deinit()
   FT_Done_FreeType(library);
 }
 
-static void fl_font_get_char_size(FT_Face face, i32 *w, i32 *h)
+static void fl_font_get_char_size(FT_Face face, u32 *w, u32 *h)
 {
   FT_GlyphSlot g = face->glyph;
   FT_Int32 load_flags = FT_LOAD_RENDER | FT_LOAD_TARGET_(FT_RENDER_MODE_NORMAL);
 
-  i32 max_char_w = 0;
-  i32 max_char_h = 0;
+  u32 max_char_w = 0;
+  u32 max_char_h = 0;
 
-  for (i32 i = 0; i < 256; i++)
+  for (u32 i = 0; i < 256; i++)
   {
     if (FT_Load_Char(face, i, load_flags))
     {
@@ -70,13 +70,13 @@ static fl_font *fl_create_atlas(FT_Face face)
 
   FT_GlyphSlot g = face->glyph;
 
-  i32 max_char_w = 0;
-  i32 max_char_h = 0;
+  u32 max_char_w = 0;
+  u32 max_char_h = 0;
 
   fl_font_get_char_size(face, &max_char_w, &max_char_h);
 
-  i32 w = max_char_w * 16;
-  i32 h = max_char_h * 16;
+  u32 w = max_char_w * 16;
+  u32 h = max_char_h * 16;
 
   /* you might as well save this value as it is needed later on */
   atlas->width = w;
@@ -112,14 +112,14 @@ static fl_font *fl_create_atlas(FT_Face face)
       atlas->characters_info[character].bh = g->bitmap.rows;
       atlas->characters_info[character].bl = g->bitmap_left;
       atlas->characters_info[character].bt = g->bitmap_top;
-      atlas->characters_info[character].tx = (double)(idx) / 16;
-      atlas->characters_info[character].ty = (double)(idy) / 16;
+      atlas->characters_info[character].tx = (f64)(idx) / 16;
+      atlas->characters_info[character].ty = (f64)(idy) / 16;
 
       // render character
       u8 *ptr = &buffer[0];
-      for (i32 _x = 0; _x < g->bitmap.width; _x++)
+      for (u32 _x = 0; _x < g->bitmap.width; _x++)
       {
-        for (i32 _y = 0; _y < g->bitmap.rows; _y++)
+        for (u32 _y = 0; _y < g->bitmap.rows; _y++)
         {
           assert(g->bitmap.width <= max_char_w);
           assert(g->bitmap.rows <= max_char_h);

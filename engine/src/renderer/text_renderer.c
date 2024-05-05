@@ -9,7 +9,6 @@ typedef struct
   vec3s position;
   vec2s uv;
   vec4s foreground;
-  vec4s background;
   float texture;
 } text_renderer_vertex;
 
@@ -22,7 +21,6 @@ text_renderer text_renderer_create()
   batch_renderer_set_attribute(r.base_renderer, 3, GL_FLOAT, false, sizeof(text_renderer_vertex), (void *)offsetof(text_renderer_vertex, position));
   batch_renderer_set_attribute(r.base_renderer, 2, GL_FLOAT, false, sizeof(text_renderer_vertex), (void *)offsetof(text_renderer_vertex, uv));
   batch_renderer_set_attribute(r.base_renderer, 4, GL_FLOAT, false, sizeof(text_renderer_vertex), (void *)offsetof(text_renderer_vertex, foreground));
-  batch_renderer_set_attribute(r.base_renderer, 4, GL_FLOAT, false, sizeof(text_renderer_vertex), (void *)offsetof(text_renderer_vertex, background));
   batch_renderer_set_attribute(r.base_renderer, 1, GL_FLOAT, false, sizeof(text_renderer_vertex), (void *)offsetof(text_renderer_vertex, texture));
 
   return r;
@@ -69,19 +67,29 @@ void text_renderer_append(text_renderer *r, fl_font *font, const char *format, .
   // va_end(args);
 }
 
-void text_renderer_draw(text_renderer *r, fl_font *font, i32 *_x, i32 *_y, const char *text, vec4s fg, vec4s bg)
+void text_renderer_new_line(text_renderer *r, fl_font *font, f32 base_x, f32 *x, f32 *y)
 {
-  i32 base_x = *_x;
-  i32 pos_x = *_x;
-  i32 pos_y = *_y;
+  *x = base_x;
+  *y -= font->line_height;
+}
+
+void text_renderer_draw(text_renderer *r, fl_font *font, f32 *_x, f32 *_y, const char *text, vec4s fg)
+{
+  f32 base_x = *_x;
+  f32 pos_x = *_x;
+  f32 pos_y = *_y;
   const char *c = text;
 
   while (*c != '\0')
   {
     if (*c == '\n')
     {
-      pos_x = base_x;
-      pos_y -= font->line_height;
+      text_renderer_new_line(r, font, base_x, &pos_x, & pos_y);
+    }
+    else if (*c == '\t')
+    {
+      fl_character_info info = font->characters_info[' '];
+      pos_x += info.ax * 4;
     }
     else
     {
@@ -119,10 +127,6 @@ void text_renderer_draw(text_renderer *r, fl_font *font, i32 *_x, i32 *_y, const
       v[2].foreground = fg;
       v[3].foreground = fg;
 
-      v[0].background = bg;
-      v[1].background = bg;
-      v[2].background = bg;
-      v[3].background = bg;
       pos_x += info.ax;
     }
     c++;

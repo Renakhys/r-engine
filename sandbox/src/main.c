@@ -3,6 +3,7 @@
 
 #include "layers/main_menu_layer.h"
 #include "layers/test_layer.h"
+#include "layers/cli_layer.h"
 
 #include <gl/gl_shader.h>
 #include <gl/gl_buffer.h>
@@ -32,9 +33,10 @@ int main()
 
   app = application_create();
 
-  create_main_menu_layer(app, "layer 1");
-  create_main_menu_layer(app, "layer 2");
-  create_test_layer(app);
+  // create_main_menu_layer(app, "layer 1");
+  // create_main_menu_layer(app, "layer 2");
+  // create_test_layer(app);
+  create_cli_layer(app);
 
 #if EMSCRIPTEN
   emscripten_set_main_loop(application_main_loop, 60, 1);
