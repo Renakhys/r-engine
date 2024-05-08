@@ -101,20 +101,16 @@ static bool on_layer_event(event_type type, void *source, void *event, void *con
   }
 }
 
-text_input text_input_create(void)
+void text_input_create(text_input *t)
 {
-  text_input t = {0};
-
-  t.buffer = darray_create(256, sizeof(i8), &base_allocator);
-  text_input_clear(&t);
-  event_handler_register(&t.ev_handler, on_layer_event);
-
-  return t;
+  t->buffer = darray_create(256, sizeof(i8), &base_allocator);
+  text_input_clear(t);
+  event_handler_register(&t->ev_handler, t, on_layer_event);
 }
 
 void text_input_free(text_input *t)
 {
-  if(t)
+  if (t)
   {
     darray_free(&t->buffer);
   }

@@ -12,7 +12,6 @@
 			"**/CVS": true,
 			"**/.DS_Store": true,
 			"**/Thumbs.db": true,
-			"**/bin": true,
 			"**/build": true,
 			"**/build_ems": true,
 			"**/modules": true,
@@ -48,7 +47,11 @@
 			"format": "c",
 			"fstream": "c",
 			"sstream": "c",
-			"*.inc": "c"
+			"*.inc": "c",
+			"events.h": "c",
+			"chrono": "c",
+			"functional": "c",
+			"text_input.h": "c"
 		}
 	}
 }

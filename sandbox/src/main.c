@@ -34,7 +34,9 @@ i32 main(i32 argc, i8 *argv[])
     return -1;
   }
 
-  app = application_create();
+  app = base_allocator.alloc(sizeof(application));
+
+  application_create(app);
 
   // create_main_menu_layer(app, "layer 1");
   // create_main_menu_layer(app, "layer 2");
@@ -51,6 +53,8 @@ i32 main(i32 argc, i8 *argv[])
 #endif
 
   application_free(app);
+  base_allocator.free(app);
+
   font_library_deinit();
 
   size_t leaked_memory = get_allocated_memory();

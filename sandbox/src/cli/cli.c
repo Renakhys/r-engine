@@ -37,7 +37,7 @@ static bool on_layer_event(event_type type, void *source, void *event, void *con
 
   cli_state *c = (cli_state *)context;
 
-  bool handled = event_raise(c->prompt_buffer.ev_handler, c, &c->prompt_buffer, type, event);
+  bool handled = event_raise(c->prompt_buffer.ev_handler, c, type, event);
   if (handled)
     return true;
 
@@ -50,16 +50,14 @@ static bool on_layer_event(event_type type, void *source, void *event, void *con
   }
 }
 
-cli_state cli_create(const i8 *prompt)
+void cli_create(cli_state *c, const i8 *prompt)
 {
-  cli_state c = {0};
-  c.console_buffer = base_allocator.alloc(CONSOLE_SIZE);
-  c.prompt_header = prompt;
-  c.prompt_buffer = text_input_create();
-  memset(c.console_buffer, 0x00, CONSOLE_SIZE);
+  c->console_buffer = base_allocator.alloc(CONSOLE_SIZE);
+  c->prompt_header = prompt;
+  text_input_create(&c->prompt_buffer);
+  memset(c->console_buffer, 0x00, CONSOLE_SIZE);
 
-  event_handler_register(&c.ev_handler, on_layer_event);
-  return c;
+  event_handler_register(&c->ev_handler, c, on_layer_event);
 }
 
 void cli_free(cli_state *c)

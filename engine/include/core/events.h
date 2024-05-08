@@ -69,8 +69,6 @@ typedef struct
   u32 codepoint;
 } event_window_text_input;
 
-bool event_raise(event_handler handler, void *source, void *target, event_type type, void *event_data);
+bool event_raise(event_handler handler, void *source, event_type type, void *event_data);
 
-void event_handler_register(event_handler *handler, EVENT_CALLBACK callback);
-
-void event_handler_register_with_context(event_handler *handler, void *context, EVENT_CALLBACK callback);
+void event_handler_register(event_handler *handler, void *context, EVENT_CALLBACK callback);

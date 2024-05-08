@@ -14,7 +14,7 @@ typedef struct
   event_handler ev_handler;
 } cli_state;
 
-cli_state cli_create(const i8 *prompt);
+void cli_create(cli_state* c, const i8 *prompt);
 
 void cli_free(cli_state *c);
 

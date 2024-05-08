@@ -36,10 +36,10 @@ application_layer *layer_create(application *app, void *layer_data, LAYER_DATA_D
 
 /// @brief free resources used by a layer, including calling layer_data destructor, automatically called by application when layer is destroyed
 /// @param application_layer layer to free
-void layer_free(application_layer *application_layer);
+void layer_free(application_layer *l);
 
 /// @brief update and render a new frame of layer
 /// @param application_layer current layer
 /// @param dt delta time from previuos frame
 /// @return return true if next layer should be rendered, false otherwise 
-bool layer_update(application_layer *application_layer, f32 dt);
+bool layer_update(application_layer *l, f32 dt);

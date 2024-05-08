@@ -88,7 +88,12 @@ void main() {
     // float aaf = fwidth(d);
     // float alpha = smoothstep(0.5f - aaf, 0.5f + aaf, d);
 
-    float alpha = sample_texture(tex, uv).r;
+	vec4 texColor = vec4(1.0, 1.0, 1.0, sample_texture(tex, uv).r);
 
-    out_color = vec4(foreground.rgb, alpha);
+	// vec4 texColor = texture(u_Texture, v_textureCoord);
+	out_color = vec4(foreground.rgb,1.0f)*texColor;
+
+    // float alpha = sample_texture(tex, uv).r;
+
+    // out_color = vec4(foreground.rgb, alpha);
 }

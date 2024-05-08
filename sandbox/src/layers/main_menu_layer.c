@@ -56,7 +56,7 @@ application_layer *create_main_menu_layer(application *app, const char *name)
   data->name = name;
 
   application_layer *layer = layer_create(app, data, main_menu_layer_destructor, main_menu_layer_render);
-  event_handler_register(&layer->layer_event_handler, on_main_menu_layer_event);
+  event_handler_register(&layer->layer_event_handler, layer, on_main_menu_layer_event);
 
   return layer;
 }

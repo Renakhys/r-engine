@@ -30,7 +30,7 @@ static bool test_layer_render(application_layer *layer, float dt)
 
   cli_layer_data *data = (cli_layer_data *)layer->layer_data;
 
-  float scale = 1.f;
+  float scale = 1.5f;
   f32 viewport_w = layer->app->window->w * scale;
   f32 viewport_h = layer->app->window->h * scale;
 
@@ -96,22 +96,22 @@ static bool on_layer_event(event_type type, void *source, void *event, void *con
   application_layer *layer = (application_layer *)context;
   cli_layer_data *data = (cli_layer_data *)layer->layer_data;
 
-  return event_raise(data->cli.ev_handler, layer, &data->cli, type, event);
+  return event_raise(data->cli.ev_handler, layer, type, event);
 }
 
 application_layer *create_cli_layer(application *app)
 {
   cli_layer_data *data = base_allocator.alloc(sizeof(cli_layer_data));
 
-  // data->font = font_create("./assets/fonts/Roboto-Regular.ttf", 20);
-  data->font = font_create("./assets/fonts/ShareTechMono-Regular.ttf", 22);
+  // data->font = font_create("./assets/fonts/ProFontIIxNerdFontMono-Regular.ttf", 36);
+  data->font = font_create("./assets/fonts/ShareTechMono-Regular.ttf", 36);
   data->font->line_height += 3;
   data->renderer = text_renderer_create();
 
   application_layer *layer = layer_create(app, data, cli_layer_destructor, test_layer_render);
-  event_handler_register(&layer->layer_event_handler, on_layer_event);
+  event_handler_register(&layer->layer_event_handler, layer, on_layer_event);
 
-  data->cli = cli_create("root@rcorp > ");
+  cli_create(&data->cli, "root@rcorp > ");
 
   return layer;
 }
