@@ -3,11 +3,8 @@
 #include "core/events.h"
 #include <cglm/cglm.h>
 
-// #define GLFW_INCLUDE_NONE
 #include "gl_common.h"
 #include <GLFW/glfw3.h>
-
-// typedef void (APIENTRYP PFNGLGETINTEGERVPROC)(GLenum pname, GLi32*data);
 
 typedef struct gl_window gl_window;
 

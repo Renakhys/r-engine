@@ -24,6 +24,7 @@ static void cli_layer_destructor(void *layer_data)
   }
 }
 
+static f32 p = 0;
 static bool test_layer_render(application_layer *layer, float dt)
 {
   UNUSED(dt);
@@ -52,10 +53,35 @@ static bool test_layer_render(application_layer *layer, float dt)
   cli_state *cli = &data->cli;
   text_renderer_begin(r, viewport_w, viewport_h);
 
+  text_renderer_options opts = {
+    .min_x = base_x,
+    .max_x = viewport_w - base_x,
+    .font_scale = 1.f,
+    .align = text_align_left,
+    .foreground = heading_color,
+    .font = data->font,
+    .is_monospace = false
+  };
+
   /*
     console content
   */
-  text_renderer_draw(r, data->font, &x, &y, cli->console_buffer, text_color);
+  const char *text = "ziobilly";
+  opts.font_scale = 3.f;
+  opts.align = text_align_center;
+  text_renderer_write_line(r, &opts, y, text, strlen(text));
+  text_renderer_new_line(r, &opts, &x, &y);
+  opts.font_scale = 1.f;
+  opts.align = text_align_left;
+
+  const char *progress = "progress: ";
+
+  p += 0.01f;
+  if (p > 1.f)
+    p = 1.f;
+  text_renderer_progress_bar(r, &opts, y, p, progress, strlen(progress));
+  text_renderer_new_line(r, &opts, &x, &y);
+  text_renderer_draw(r, &opts, &x, &y, cli->console_buffer);
 
   /*
     prompt heading
@@ -63,15 +89,15 @@ static bool test_layer_render(application_layer *layer, float dt)
   if (x != base_x)
   {
     // insert a new line
-    text_renderer_new_line(r, data->font, base_x, &x, &y);
+    text_renderer_new_line(r, &opts, &x, &y);
   }
-  text_renderer_draw(r, data->font, &x, &y, cli->prompt_header, heading_color);
+  text_renderer_draw(r, &opts, &x, &y, cli->prompt_header);
 
   /*
     prompt content
   */
-  text_renderer_draw(r, data->font, &x, &y, (i8 *)cli->prompt_buffer.buffer.data, text_color);
-  text_renderer_new_line(r, data->font, base_x, &x, &y);
+  text_renderer_draw(r, &opts, &x, &y, (i8 *)cli->prompt_buffer.buffer.data);
+  text_renderer_new_line(r, &opts, &x, &y);
 
   /*
     suggestions
@@ -81,7 +107,7 @@ static bool test_layer_render(application_layer *layer, float dt)
   for (i32 i = 0; i < 10; i++)
   {
     sprintf(buffer, "suggestion %d\n", i + 1);
-    text_renderer_draw(r, data->font, &x, &y, buffer, suggestions_color);
+    text_renderer_draw(r, &opts, &x, &y, buffer);
   }
 
   text_renderer_end(r);

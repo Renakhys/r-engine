@@ -1,5 +1,6 @@
 #include "renderer/text_renderer.h"
 #include "core/allocator.h"
+#include <string.h>
 
 #define VERTEX_SHADER_PATH "./assets/shaders/text.vs"
 #define FRAGMENT_SHADER_PATH "./assets/shaders/text.fs"
@@ -70,15 +71,128 @@ void text_renderer_append(text_renderer *r, fl_font *font, const char *format, .
   // va_end(args);
 }
 
-void text_renderer_new_line(text_renderer *r, fl_font *font, f32 base_x, f32 *x, f32 *y)
+void text_renderer_new_line(text_renderer *r, const text_renderer_options *opts, f32 *x, f32 *y)
 {
   UNUSED(r);
-  
-  *x = base_x;
-  *y -= font->line_height;
+
+  *x = opts->min_x;
+  *y -= opts->font->line_height * opts->font_scale;
 }
 
-void text_renderer_draw(text_renderer *r, fl_font *font, f32 *_x, f32 *_y, const char *text, vec4s fg)
+static void text_renderer_write_char(text_renderer *r, const text_renderer_options *opts, f32 *pos_x, f32 *pos_y, char c)
+{
+  u32 tex = 0;
+  text_renderer_vertex *v = (text_renderer_vertex *)batch_renderer_get_quad(r->base_renderer, opts->font->texture, &tex);
+
+  fl_character_info info = opts->font->characters_info[c];
+
+  float min_x = *pos_x + (info.bl) * opts->font_scale;
+  float max_x = *pos_x + (info.bl + info.bw) * opts->font_scale;
+  float max_y = *pos_y - (opts->font->line_height - info.bt) * opts->font_scale;
+  float min_y = *pos_y - (opts->font->line_height - info.bt + info.bh) * opts->font_scale;
+
+  float min_uv_x = info.tx;
+  float max_uv_x = info.tx + info.bw / opts->font->width;
+  float max_uv_y = info.ty;
+  float min_uv_y = info.ty + info.bh / opts->font->height;
+
+  v[0].position = v3(min_x, max_y, 0.f);
+  v[1].position = v3(max_x, max_y, 0.f);
+  v[2].position = v3(max_x, min_y, 0.f);
+  v[3].position = v3(min_x, min_y, 0.f);
+
+  v[0].uv = v2(min_uv_x, max_uv_y);
+  v[1].uv = v2(max_uv_x, max_uv_y);
+  v[2].uv = v2(max_uv_x, min_uv_y);
+  v[3].uv = v2(min_uv_x, min_uv_y);
+
+  v[0].texture = (float)tex;
+  v[1].texture = (float)tex;
+  v[2].texture = (float)tex;
+  v[3].texture = (float)tex;
+
+  v[0].foreground = opts->foreground;
+  v[1].foreground = opts->foreground;
+  v[2].foreground = opts->foreground;
+  v[3].foreground = opts->foreground;
+
+  if (opts->is_monospace)
+    *pos_x += opts->font->characters_info[' '].ax * opts->font_scale;
+  else
+    *pos_x += info.ax * opts->font_scale;
+}
+
+static f32 text_renderer_get_text_size(const text_renderer_options *opts, const char *text, u32 text_length)
+{
+  f32 len = 0.f;
+  for (u32 i = 0; i < text_length; i++)
+  {
+    fl_character_info info = opts->font->characters_info[text[i]];
+
+    if (opts->is_monospace)
+      len += opts->font->characters_info[' '].ax * opts->font_scale;
+    else
+      len += info.ax * opts->font_scale;
+  }
+  return len * opts->font_scale;
+}
+
+void text_renderer_write_line(text_renderer *r, const text_renderer_options *opts, f32 y, const char *text, u32 text_length)
+{
+  // calculate line length
+  float len = text_renderer_get_text_size(opts, text, text_length);
+
+  f32 x;
+  switch (opts->align)
+  {
+  case text_align_left:
+    x = opts->min_x;
+    break;
+  case text_align_center:
+    x = opts->min_x + (opts->max_x - opts->min_x - len) / 2.f;
+    break;
+  case text_align_right:
+    x = opts->max_x - len;
+    break;
+  }
+
+  for (u32 i = 0; i < text_length; i++)
+  {
+    text_renderer_write_char(r, opts, &x, &y, text[i]);
+  }
+}
+
+void text_renderer_progress_bar(text_renderer *r, const text_renderer_options *opts, f32 y, f32 progress, const char *text, u32 text_length)
+{
+  char tmp_buffer[16];
+  sprintf(tmp_buffer, " %3.1f%% ", progress * 100.f);
+
+  f32 fill_size = opts->font->characters_info['#'].ax * opts->font_scale;
+  f32 brace_size_1 = opts->font->characters_info['['].ax * opts->font_scale;
+  f32 brace_size_2 = opts->font->characters_info[']'].ax * opts->font_scale;
+
+  // calculate len of text to print
+  f32 text_size = text_renderer_get_text_size(opts, text, text_length);
+  text_size += text_renderer_get_text_size(opts, tmp_buffer, strlen(tmp_buffer));
+  f32 available_size = opts->max_x - opts->min_x - text_size - brace_size_1 - brace_size_2;
+
+  f32 x = opts->min_x;
+
+  text_renderer_draw(r, opts, &x, &y, text);
+  text_renderer_write_char(r, opts, &x, &y, '[');
+
+  f32 final_x = x + available_size;
+  u32 fill = (u32)(available_size * progress / fill_size);
+  for (u32 i = 0; i < fill; i++)
+    text_renderer_write_char(r, opts, &x, &y, '#');
+
+  x = final_x;
+
+  text_renderer_write_char(r, opts, &x, &y, ']');
+  text_renderer_draw(r, opts, &x, &y, tmp_buffer);
+}
+
+void text_renderer_draw(text_renderer *r, const text_renderer_options *opts, f32 *_x, f32 *_y, const char *text)
 {
   f32 base_x = *_x;
   f32 pos_x = *_x;
@@ -89,50 +203,16 @@ void text_renderer_draw(text_renderer *r, fl_font *font, f32 *_x, f32 *_y, const
   {
     if (*c == '\n')
     {
-      text_renderer_new_line(r, font, base_x, &pos_x, & pos_y);
+      text_renderer_new_line(r, opts, &pos_x, &pos_y);
     }
     else if (*c == '\t')
     {
-      fl_character_info info = font->characters_info[' '];
-      pos_x += info.ax * 4;
+      fl_character_info info = opts->font->characters_info[' '];
+      pos_x += info.ax * 4 * opts->font_scale;
     }
     else
     {
-      u32 tex = 0;
-      text_renderer_vertex *v = (text_renderer_vertex *)batch_renderer_get_quad(r->base_renderer, font->texture, &tex);
-
-      fl_character_info info = font->characters_info[*c];
-
-      float min_x = pos_x + info.bl;
-      float max_x = pos_x + info.bl + info.bw;
-      float max_y = pos_y - font->line_height + info.bt;
-      float min_y = pos_y - font->line_height + info.bt - info.bh;
-      float min_uv_x = info.tx;
-      float max_uv_x = info.tx + info.bw / font->width;
-      float max_uv_y = info.ty;
-      float min_uv_y = info.ty + info.bh / font->height;
-
-      v[0].position = v3(min_x, max_y, 0.f);
-      v[1].position = v3(max_x, max_y, 0.f);
-      v[2].position = v3(max_x, min_y, 0.f);
-      v[3].position = v3(min_x, min_y, 0.f);
-
-      v[0].uv = v2(min_uv_x, max_uv_y);
-      v[1].uv = v2(max_uv_x, max_uv_y);
-      v[2].uv = v2(max_uv_x, min_uv_y);
-      v[3].uv = v2(min_uv_x, min_uv_y);
-
-      v[0].texture = (float)tex;
-      v[1].texture = (float)tex;
-      v[2].texture = (float)tex;
-      v[3].texture = (float)tex;
-
-      v[0].foreground = fg;
-      v[1].foreground = fg;
-      v[2].foreground = fg;
-      v[3].foreground = fg;
-
-      pos_x += info.ax;
+      text_renderer_write_char(r, opts, &pos_x, &pos_y, *c);
     }
     c++;
   }
